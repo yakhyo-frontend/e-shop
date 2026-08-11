@@ -8,8 +8,8 @@ import { FiLoader } from "react-icons/fi";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    login: "admin",
-    password: "admin123",
+    login: "",
+    password: "",
   });
 
   const [loading, setLoading] = useState(false);
