@@ -1,0 +1,71 @@
+import { NavLink, useNavigate } from "react-router-dom";
+import { TbLayoutDashboard } from "react-icons/tb";
+import { BsBoxSeam } from "react-icons/bs";
+import { CgLogOut } from "react-icons/cg";
+
+export const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/");
+    window.location.reload();
+  };
+
+  return (
+    <aside className="w-[260px] min-h-screen bg-slate-900 border-r border-slate-800 shadow-2xl p-6 flex flex-col justify-between">
+      <div>
+        <div className="mb-10 px-2">
+          <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
+            Magnate E-Shop
+          </h1>
+          <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+            Admin Dashboard
+          </p>
+        </div>
+
+        <nav className="flex flex-col gap-2 font-medium">
+          <NavLink
+            to="/layout/dashboard"
+            end
+            className={({ isActive }) =>
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-xl font-semibold"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+              }`
+            }
+          >
+            <TbLayoutDashboard size={20} />
+            <span>Dashboard</span>
+          </NavLink>
+
+          <NavLink
+            to="/layout/products"
+            end
+            className={({ isActive }) =>
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-lg font-semibold"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+              }`
+            }
+          >
+            <BsBoxSeam size={20} />
+            <span>Products</span>
+          </NavLink>
+        </nav>
+      </div>
+
+      <div>
+        <button
+          onClick={logout}
+          className="w-full h-[50px] flex items-center justify-center gap-2.5 border border-rose-900 text-rose-400 font-medium rounded-2xl hover:bg-rose-700 hover:text-white hover:border-rose-600 transition-all duration-300 shadow-lg cursor-pointer"
+        >
+          <CgLogOut size={20} />
+          <span>LogOut</span>
+        </button>
+      </div>
+    </aside>
+  );
+};
