@@ -13,6 +13,7 @@ const Add = ({ onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
 
     try {
@@ -35,6 +36,7 @@ const Add = ({ onClose, onSave }) => {
 
       if (!res.ok) {
         throw new Error(data.message);
+        toast.error(data.message);
       }
 
       toast.success("Product has added successfully!");
@@ -48,8 +50,8 @@ const Add = ({ onClose, onSave }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 border border-slate-700 p-6 w-full max-w-md rounded-2xl shadow-2xl text-slate-100">
+    <div className="flex items-center justify-center fixed bg-black/60 z-50 inset-0 p-4">
+      <div className="bg-slate-800 border border-slate-700 p-6 w-[450px] rounded-2xl shadow-2xl text-slate-100">
         <h2 className="text-xl font-bold text-emerald-400 mb-4">Add Product</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -125,14 +127,14 @@ const Add = ({ onClose, onSave }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition text-sm font-medium cursor-pointer"
+              className="px-5 py-2 bg-slate-700 text-slate-300 rounded-xl hover:bg-slate-600 transition text-sm font-medium cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl hover:bg-emerald-400 transition text-sm cursor-pointer disabled:opacity-50"
+              className="px-5 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl hover:bg-emerald-400 transition text-sm cursor-pointer disabled:opacity-50"
             >
               {loading ? "Adding..." : "Add"}
             </button>

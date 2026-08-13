@@ -10,7 +10,8 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
 
   const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
@@ -82,8 +83,8 @@ const Products = () => {
 
         <div>
           <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-5 py-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold rounded-xl hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg cursor-pointer flex items-center gap-2"
+            onClick={() => setIsModalAddOpen(true)}
+            className="px-6 py-3 mb-5 bg-slate-700 border border-slate-600 text-emerald-400 text-sm font-semibold rounded-xl hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg cursor-pointer flex items-center justify-center gap-2"
           >
             <span>+ Add Product</span>
           </button>
@@ -100,7 +101,7 @@ const Products = () => {
       </div>
 
       <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-6">
-        <table className="w-full table-fixed">
+        <table className="w-full fixed">
           <thead className="bg-slate-900/80 text-emerald-400 border-b border-slate-700">
             <tr className="h-16 text-xs uppercase tracking-wider">
               <th className="w-[65px] text-center font-semibold">#</th>
@@ -139,12 +140,12 @@ const Products = () => {
                   {item.name.slice(0, 18)}...
                 </td>
 
-                <td className="px-4 py-4 text-sm text-slate-400 leading-relaxed truncate">
+                <td className="px-4 py-4 text-sm text-slate-400 leading-relaxed hidden">
                   {item.description.slice(0, 80)}...
                 </td>
 
                 <td className="px-4 py-4">
-                  <span className="inline-flex items-center justify-center bg-emerald-500/10 text-emerald-400 text-xs px-3 py-1 rounded-xl border border-emerald-500/20 font-medium">
+                  <span className="flex items-center justify-center bg-emerald-900 text-emerald-400 text-xs px-3 py-1 rounded-xl border border-emerald-950 font-medium">
                     {item.isActive ? "Active" : "inActive"}
                   </span>
                 </td>
@@ -160,7 +161,7 @@ const Products = () => {
                         setEditId(item.id);
                         setIsModalEditOpen(true);
                       }}
-                      className="w-[60px] h-[42px] text-xs flex flex-col items-center justify-center gap-0.5 bg-sky-500/10 border border-sky-500/20 text-sky-400 font-medium rounded-xl hover:bg-sky-500 hover:text-white transition-all cursor-pointer"
+                      className="w-[60px] h-[42px] text-xs flex flex-col items-center justify-center gap-0.5 bg-sky-900 border border-sky-950 text-sky-400 font-medium rounded-xl hover:bg-sky-500 hover:text-white transition-all cursor-pointer"
                     >
                       <FiEdit3 size={14} />
                       <span>Edit</span>
@@ -170,7 +171,7 @@ const Products = () => {
                         setDeleteId(item.id);
                         setIsModalDeleteOpen(true);
                       }}
-                      className="w-[65px] h-[42px] text-xs flex flex-col items-center justify-center gap-0.5 bg-rose-500/10 border border-rose-500/20 text-rose-400 font-medium rounded-xl hover:bg-rose-600 hover:text-white transition-all cursor-pointer"
+                      className="w-[65px] h-[42px] text-xs flex flex-col items-center justify-center gap-0.5 bg-rose-900 border border-rose-950 text-rose-400 font-medium rounded-xl hover:bg-rose-600 hover:text-white transition-all cursor-pointer"
                     >
                       <MdOutlineDelete size={16} />
                       <span>Delete</span>
@@ -207,9 +208,9 @@ const Products = () => {
         </button>
       </div>
 
-      {isModalOpen ? (
+      {isModalAddOpen ? (
         <Add
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalAddOpen(false)}
           onSave={(newProduct) => {
             setProducts((prev) => [newProduct, ...prev]);
           }}
@@ -218,28 +219,11 @@ const Products = () => {
 
       {isModalDeleteOpen ? (
         <Delete
+          id={deleteId}
           isOpen={isModalDeleteOpen}
           onClose={() => setIsModalDeleteOpen(false)}
-          onConfirm={async () => {
-            try {
-              const token = localStorage.getItem("accessToken");
-              await fetch(
-                `https://backend.magnateshop.uz/api/products/${deleteId}`,
-                {
-                  method: "DELETE",
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                },
-              );
-              setProducts((prev) =>
-                prev.filter((item) => item.id !== deleteId),
-              );
-            } catch (err) {
-              throw new Error(err);
-            } finally {
-              setIsModalDeleteOpen(false);
-            }
+          onSave={(deletedId) => {
+            setProducts((prev) => prev.filter((item) => item.id !== deletedId));
           }}
         />
       ) : null}
@@ -255,7 +239,6 @@ const Products = () => {
                 item.id === updatedProduct.id ? updatedProduct : item,
               ),
             );
-            setIsModalEditOpen(false);
           }}
         />
       ) : null}

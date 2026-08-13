@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 
-const Edit = ({ id, isOpen, onClose, onSave }) => {
+const Edit = ({ id, onClose, onSave }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
-    if (id && isOpen) {
+    if (id) {
       const fetchProductDetails = async () => {
         try {
           const res = await fetch(
@@ -29,19 +28,16 @@ const Edit = ({ id, isOpen, onClose, onSave }) => {
           setPrice(product.price);
           setCategoryId(product.categoryId);
         } catch (err) {
-          throw new Error(err);
+          toast.error(err);
         }
       };
 
       fetchProductDetails();
     }
-  }, [id, isOpen, token]);
-
-  if (!isOpen) return null;
+  }, [id, token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       const res = await fetch(
@@ -63,27 +59,17 @@ const Edit = ({ id, isOpen, onClose, onSave }) => {
 
       const data = await res.json();
 
-      if (res.ok) {
-        onSave({
-          id,
-          name,
-          description,
-          price,
-          categoryId: Number(categoryId),
-        });
+      if (res.ok && onSave) {
+        onSave(data.data);
         onClose();
-      } else {
-        console.error("Failed to update:", data);
       }
     } catch (err) {
-      throw new Error(err);
-    } finally {
-      setLoading(false);
+      console.error(err);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
       <div className="bg-slate-800 border border-slate-700 w-full max-w-md p-6 rounded-2xl shadow-2xl text-slate-100">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-emerald-400">Edit Product</h2>
@@ -139,7 +125,6 @@ const Edit = ({ id, isOpen, onClose, onSave }) => {
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               required
-              placeholder="Введите ID категории (например: 1, 2...)"
               className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-emerald-400"
             />
           </div>
@@ -154,10 +139,9 @@ const Edit = ({ id, isOpen, onClose, onSave }) => {
             </button>
             <button
               type="submit"
-              disabled={loading}
-              className="px-5 py-2.5 bg-emerald-500 text-slate-950 font-semibold rounded-xl text-sm hover:bg-emerald-400 transition cursor-pointer disabled:opacity-50"
+              className="px-5 py-2.5 bg-sky-600 text-white font-semibold rounded-xl text-sm hover:bg-sky-700 transition cursor-pointer"
             >
-              {loading ? "Saving..." : "Save Changes"}
+              Save Changes
             </button>
           </div>
         </form>

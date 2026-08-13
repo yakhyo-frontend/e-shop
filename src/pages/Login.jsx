@@ -53,7 +53,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-slate-900 to-emerald-900 w-full h-screen p-[100px]">
+    <div className="bg-slate-900 w-full h-screen p-[100px]">
       <Toaster />
       <form
         onSubmit={handleSubmit}
