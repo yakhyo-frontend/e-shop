@@ -101,7 +101,7 @@ const Products = () => {
       </div>
 
       <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-6">
-        <table className="w-full fixed">
+        <table className="w-full table-fixed">
           <thead className="bg-slate-900/80 text-emerald-400 border-b border-slate-700">
             <tr className="h-16 text-xs uppercase tracking-wider">
               <th className="w-[65px] text-center font-semibold">#</th>
