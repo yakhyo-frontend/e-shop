@@ -84,7 +84,7 @@ const Products = () => {
         <div>
           <button
             onClick={() => setIsModalAddOpen(true)}
-            className="px-6 py-3 mb-5 bg-slate-700 border border-slate-600 text-emerald-400 text-sm font-semibold rounded-xl hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg cursor-pointer flex items-center justify-center gap-2"
+            className="px-6 py-3 bg-slate-700 border border-slate-600 text-emerald-400 text-sm font-semibold rounded-xl hover:bg-emerald-500 hover:text-slate-950 transition-all shadow-lg cursor-pointer flex items-center justify-center gap-2"
           >
             <span>+ Add Product</span>
           </button>
@@ -101,18 +101,16 @@ const Products = () => {
       </div>
 
       <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-6">
-        <table className="w-full table-fixed">
+        <table className="w-full text-left border-collapse">
           <thead className="bg-slate-900/80 text-emerald-400 border-b border-slate-700">
             <tr className="h-16 text-xs uppercase tracking-wider">
-              <th className="w-[65px] text-center font-semibold">#</th>
-              <th className="w-[100px] text-center font-semibold">Image</th>
-              <th className="w-[130px] px-4 text-left font-semibold">Name</th>
-              <th className="w-[220px] px-16 text-left font-semibold">
-                Description
-              </th>
-              <th className="w-[80px] px-4 text-left font-semibold">Status</th>
-              <th className="w-[170px] text-center font-semibold">Price</th>
-              <th className="w-[150px] text-center font-semibold">Actions</th>
+              <th className="px-4 text-center font-semibold">#</th>
+              <th className="px-4 text-center font-semibold">Image</th>
+              <th className="px-4 font-semibold">Name</th>
+              <th className="px-4 font-semibold">Description</th>
+              <th className="px-4 text-center font-semibold">Status</th>
+              <th className="px-4 text-center font-semibold">Price</th>
+              <th className="px-4 text-center font-semibold">Actions</th>
             </tr>
           </thead>
 
@@ -120,13 +118,13 @@ const Products = () => {
             {currentItems.map((item, index) => (
               <tr
                 key={item.id}
-                className="hover:bg-slate-700 transition-all border-b border-slate-700"
+                className="hover:bg-slate-700/50 transition-all border-b border-slate-700"
               >
-                <td className="text-center font-medium text-slate-400 py-4">
+                <td className="px-4 py-4 text-center font-medium text-slate-400">
                   {indexOfFirstItem + index + 1}
                 </td>
 
-                <td className="py-4">
+                <td className="px-4 py-4 text-center">
                   <div className="w-[60px] h-[55px] m-auto rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center p-1">
                     <img
                       src={item.image}
@@ -136,25 +134,25 @@ const Products = () => {
                   </div>
                 </td>
 
-                <td className="px-4 py-4 font-medium text-slate-200 text-sm truncate">
-                  {item.name.slice(0, 18)}...
+                <td className="px-4 py-4 font-medium text-slate-200 text-sm">
+                  {item.name.slice(0, 15)}...
                 </td>
 
-                <td className="px-4 py-4 text-sm text-slate-400 leading-relaxed hidden">
-                  {item.description.slice(0, 80)}...
+                <td className="px-4 py-4 text-sm text-slate-400">
+                  {item.description.slice(0, 40)}...
                 </td>
 
-                <td className="px-4 py-4">
-                  <span className="flex items-center justify-center bg-emerald-900 text-emerald-400 text-xs px-3 py-1 rounded-xl border border-emerald-950 font-medium">
+                <td className="px-4 py-4 text-center">
+                  <span className="inline-flex items-center justify-center bg-emerald-900/60 text-emerald-400 text-xs px-3 py-1 rounded-xl border border-emerald-950 font-medium">
                     {item.isActive ? "Active" : "inActive"}
                   </span>
                 </td>
 
-                <td className="text-center py-4 font-bold text-emerald-400">
+                <td className="px-4 py-4 text-center font-bold text-emerald-400 whitespace-nowrap">
                   {item.price.toLocaleString()} so'm
                 </td>
 
-                <td className="text-center py-4">
+                <td className="px-4 py-4 text-center">
                   <div className="flex items-center justify-center gap-1.5">
                     <button
                       onClick={() => {
@@ -208,16 +206,16 @@ const Products = () => {
         </button>
       </div>
 
-      {isModalAddOpen ? (
+      {isModalAddOpen && (
         <Add
           onClose={() => setIsModalAddOpen(false)}
           onSave={(newProduct) => {
             setProducts((prev) => [newProduct, ...prev]);
           }}
         />
-      ) : null}
+      )}
 
-      {isModalDeleteOpen ? (
+      {isModalDeleteOpen && (
         <Delete
           id={deleteId}
           isOpen={isModalDeleteOpen}
@@ -226,9 +224,9 @@ const Products = () => {
             setProducts((prev) => prev.filter((item) => item.id !== deletedId));
           }}
         />
-      ) : null}
+      )}
 
-      {isModalEditOpen ? (
+      {isModalEditOpen && (
         <Edit
           id={editId}
           isOpen={isModalEditOpen}
@@ -241,7 +239,7 @@ const Products = () => {
             );
           }}
         />
-      ) : null}
+      )}
     </div>
   );
 };
