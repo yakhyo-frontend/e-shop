@@ -1,3 +1,6 @@
+import React from "react";
+import toast from "react-hot-toast";
+
 const Delete = ({ id, onClose, onSave }) => {
   const token = localStorage.getItem("accessToken");
 
@@ -9,6 +12,8 @@ const Delete = ({ id, onClose, onSave }) => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      toast.success("Product has deleted successfully!");
 
       if (onSave) onSave(id);
       onClose();

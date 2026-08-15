@@ -2,14 +2,20 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { BsBoxSeam } from "react-icons/bs";
 import { CgLogOut } from "react-icons/cg";
+import { RiAdminFill } from "react-icons/ri";
+import { MdOutlineCategory } from "react-icons/md";
+import toast from "react-hot-toast";
 
 export const Sidebar = () => {
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.removeItem("accessToken");
-    navigate("/");
-    window.location.reload();
+    toast.success("LogOut successfully!");
+    setTimeout(() => {
+      navigate("/");
+      window.location.reload();
+    }, 1500);
   };
 
   return (
@@ -41,6 +47,20 @@ export const Sidebar = () => {
           </NavLink>
 
           <NavLink
+            to="/layout/category"
+            end
+            className={({ isActive }) =>
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-lg font-semibold"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+              }`
+            }
+          >
+            <MdOutlineCategory size={20} />
+            <span>Category</span>
+          </NavLink>
+          <NavLink
             to="/layout/products"
             end
             className={({ isActive }) =>
@@ -58,6 +78,12 @@ export const Sidebar = () => {
       </div>
 
       <div>
+        <div className="w-full h-[50px] mb-2 flex items-center justify-center gap-2.5 border border-emerald-700 text-white font-medium rounded-2xl">
+          <span>
+            <RiAdminFill size={18} />
+          </span>
+          <h4>Bosh Administrator</h4>
+        </div>
         <button
           onClick={logout}
           className="w-full h-[50px] flex items-center justify-center gap-2.5 border border-rose-900 text-rose-400 font-medium rounded-2xl hover:bg-rose-700 hover:text-white hover:border-rose-600 transition-all duration-300 shadow-lg cursor-pointer"

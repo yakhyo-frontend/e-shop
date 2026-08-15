@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard";
 import Products from "./components/Products";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -16,6 +17,8 @@ const App = () => {
 
   return (
     <div>
+      <Toaster />
+
       <Routes>
         {accessToken ? (
           <Route path="/layout" element={<Layout />}>

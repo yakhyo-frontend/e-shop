@@ -4,6 +4,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import Add from "./Modals/Add";
 import Delete from "./Modals/Delete";
 import Edit from "./Modals/Edit";
+import toast from "react-hot-toast";
 
 const Products = () => {
   // States
@@ -47,6 +48,40 @@ const Products = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleToggleStatus = (product) => {
+    const token = localStorage.getItem("accessToken");
+
+    fetch(`https://backend.magnateshop.uz/api/products/${product.id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ isActive: !product.isActive }),
+    })
+      .then(async (res) => {
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.message);
+        }
+
+        return data.data;
+      })
+      .then(() => {
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === product.id ? { ...p, isActive: !product.isActive } : p,
+          ),
+        );
+
+        toast.success("Status updated!");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
 
   useEffect(() => {
@@ -143,9 +178,16 @@ const Products = () => {
                 </td>
 
                 <td className="px-4 py-4 text-center">
-                  <span className="inline-flex items-center justify-center bg-emerald-900/60 text-emerald-400 text-xs px-3 py-1 rounded-xl border border-emerald-950 font-medium">
-                    {item.isActive ? "Active" : "inActive"}
-                  </span>
+                  <button
+                    onClick={() => handleToggleStatus(item)}
+                    className={`cursor-pointer inline-flex items-center justify-center text-xs px-3 py-1 rounded-xl border font-medium transition-colors ${
+                      item.isActive
+                        ? "bg-emerald-600 text-white border-emerald-700 hover:bg-emerald-700"
+                        : "bg-rose-600 text-white border-rose-700 hover:bg-rose-700"
+                    }`}
+                  >
+                    {item.isActive ? "Active" : "Inactive"}
+                  </button>
                 </td>
 
                 <td className="px-4 py-4 text-center font-bold text-emerald-400 whitespace-nowrap">

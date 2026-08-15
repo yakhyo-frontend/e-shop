@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Edit = ({ id, onClose, onSave }) => {
   const [name, setName] = useState("");
@@ -58,6 +59,8 @@ const Edit = ({ id, onClose, onSave }) => {
       );
 
       const data = await res.json();
+
+      toast.success("Product has edited successfully!");
 
       if (res.ok && onSave) {
         onSave(data.data);

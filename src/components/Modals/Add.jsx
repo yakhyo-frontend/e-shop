@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const Add = ({ onClose, onSave }) => {
   const [name, setName] = useState("");
