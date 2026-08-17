@@ -1,19 +1,19 @@
 import React from "react";
 import toast from "react-hot-toast";
 
-const Delete = ({ id, onClose, onSave }) => {
+const CategoryDelete = ({ id, onClose, onSave }) => {
   const token = localStorage.getItem("accessToken");
 
   const handleDelete = async (e) => {
     e.preventDefault();
 
     try {
-      await fetch(`https://backend.magnateshop.uz/api/products/${id}`, {
+      await fetch(`https://backend.magnateshop.uz/api/categories/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.success("Product deleted successfully!");
+      toast.success("Category deleted successfully!");
 
       if (onSave) onSave(id);
       onClose();
@@ -27,8 +27,8 @@ const Delete = ({ id, onClose, onSave }) => {
       <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 w-[400px] shadow-2xl">
         <h2 className="text-xl font-bold text-white mb-2">Confirm Delete</h2>
         <p className="text-slate-400 mb-6">
-          Are you sure you want to delete this product? This action cannot be
-          undone!
+          Are you sure you want to delete this category? This action cannot be
+          undone! All products inside this category will also be deleted.
         </p>
         <div className="flex gap-3 justify-end">
           <button
@@ -51,4 +51,4 @@ const Delete = ({ id, onClose, onSave }) => {
   );
 };
 
-export default Delete;
+export default CategoryDelete;

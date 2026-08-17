@@ -11,10 +11,12 @@ export const Sidebar = () => {
 
   const logout = () => {
     localStorage.removeItem("accessToken");
-    toast.success("LogOut successfully!");
+    toast.success("LogOut successfully!", {
+      position: "top-center",
+      duration: 1500,
+    });
     setTimeout(() => {
-      navigate("/");
-      window.location.reload();
+      navigate("/login");
     }, 1500);
   };
 

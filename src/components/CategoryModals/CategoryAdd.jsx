@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const Add = ({ onClose, onSave }) => {
+const CategoryAdd = ({ onClose, onSave }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
@@ -17,7 +17,7 @@ const Add = ({ onClose, onSave }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://backend.magnateshop.uz/api/products", {
+      const res = await fetch("https://backend.magnateshop.uz/api/categories", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,10 +25,7 @@ const Add = ({ onClose, onSave }) => {
         },
         body: JSON.stringify({
           name,
-          price: Number(price),
           description,
-          categoryId: Number(categoryId),
-          image,
         }),
       });
 
@@ -39,7 +36,7 @@ const Add = ({ onClose, onSave }) => {
         toast.error(data.message);
       }
 
-      toast.success("Product added successfully!");
+      toast.success("Category added successfully!");
       if (onSave) onSave(data.data);
       onClose();
     } catch (err) {
@@ -52,7 +49,9 @@ const Add = ({ onClose, onSave }) => {
   return (
     <div className="flex items-center justify-center fixed bg-black/60 z-50 inset-0 p-4">
       <div className="bg-slate-800 border border-slate-700 p-6 w-[450px] rounded-2xl shadow-2xl text-slate-100">
-        <h2 className="text-xl font-bold text-emerald-400 mb-4">Add Product</h2>
+        <h2 className="text-xl font-bold text-emerald-400 mb-4">
+          Add Category
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <div>
@@ -63,49 +62,7 @@ const Add = ({ onClose, onSave }) => {
               onChange={(e) => setName(e.target.value)}
               required
               className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm"
-              placeholder="Product name..."
-            />
-          </div>
-
-          <div>
-            <label className="text-xs uppercase text-slate-400">
-              Price (so'm)
-            </label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm"
-              placeholder="99000"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs uppercase text-slate-400">
-              Category ID
-            </label>
-            <input
-              type="number"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              required
-              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm"
-              placeholder="1, 2, 3..."
-            />
-          </div>
-
-          <div>
-            <label className="text-xs uppercase text-slate-400">
-              Image URL
-            </label>
-            <input
-              type="url"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              required
-              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm"
-              placeholder="https://..."
+              placeholder="Category name..."
             />
           </div>
 
@@ -119,7 +76,7 @@ const Add = ({ onClose, onSave }) => {
               required
               rows="3"
               className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm resize-none"
-              placeholder="Product description..."
+              placeholder="Category description..."
             />
           </div>
 
@@ -145,4 +102,4 @@ const Add = ({ onClose, onSave }) => {
   );
 };
 
-export default Add;
+export default CategoryAdd;
