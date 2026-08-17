@@ -21,13 +21,13 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className="w-[260px] min-h-screen bg-slate-900 border-r border-slate-800 shadow-2xl p-6 flex flex-col justify-between">
+    <aside className="w-[260px] min-h-screen bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between select-none">
       <div>
         <div className="mb-10 px-2">
           <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
             Magnate E-Shop
           </h1>
-          <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+          <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">
             Admin Dashboard
           </p>
         </div>
@@ -37,10 +37,10 @@ export const Sidebar = () => {
             to="/layout/dashboard"
             end
             className={({ isActive }) =>
-              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all  cursor-pointer ${
                 isActive
-                  ? "bg-emerald-600 text-white shadow-xl font-semibold"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900 font-semibold"
+                  : "text-slate-400 hover:bg-slate-800/80 hover:text-emerald-300"
               }`
             }
           >
@@ -52,24 +52,25 @@ export const Sidebar = () => {
             to="/layout/category"
             end
             className={({ isActive }) =>
-              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all cursor-pointer ${
                 isActive
-                  ? "bg-emerald-600 text-white shadow-lg font-semibold"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900 font-semibold"
+                  : "text-slate-400 hover:bg-slate-800/80 hover:text-emerald-300"
               }`
             }
           >
             <MdOutlineCategory size={20} />
             <span>Category</span>
           </NavLink>
+
           <NavLink
             to="/layout/products"
             end
             className={({ isActive }) =>
-              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all duration-300 cursor-pointer ${
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all  cursor-pointer ${
                 isActive
-                  ? "bg-emerald-600 text-white shadow-lg font-semibold"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900 font-semibold"
+                  : "text-slate-400 hover:bg-slate-800  hover:text-emerald-300"
               }`
             }
           >
@@ -80,15 +81,14 @@ export const Sidebar = () => {
       </div>
 
       <div>
-        <div className="w-full h-[50px] mb-2 flex items-center justify-center gap-2.5 border border-emerald-700 text-white font-medium rounded-2xl">
-          <span>
-            <RiAdminFill size={18} />
-          </span>
+        <div className="w-full h-[50px] mb-3 flex items-center justify-center gap-2.5 bg-slate-900 border border-emerald-900 text-emerald-300 font-medium rounded-2xl text-sm">
+          <RiAdminFill size={18} className="text-emerald-400" />
           <h4>Bosh Administrator</h4>
         </div>
+
         <button
           onClick={logout}
-          className="w-full h-[50px] flex items-center justify-center gap-2.5 border border-rose-900 text-rose-400 font-medium rounded-2xl hover:bg-rose-700 hover:text-white hover:border-rose-600 transition-all duration-300 shadow-lg cursor-pointer"
+          className="w-full h-[50px] flex items-center justify-center gap-2.5 bg-slate-900 border border-rose-900 text-rose-400 font-medium rounded-2xl hover:bg-rose-900 hover:text-white hover:border-slate-900 transition-all  cursor-pointer text-sm"
         >
           <CgLogOut size={20} />
           <span>LogOut</span>
@@ -97,3 +97,5 @@ export const Sidebar = () => {
     </aside>
   );
 };
+
+export default Sidebar;
