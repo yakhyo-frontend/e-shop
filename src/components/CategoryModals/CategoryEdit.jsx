@@ -68,7 +68,7 @@ const CategoryEdit = ({ id, onClose, onSave }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 animate-in fade-in zoom-in-95 duration-500">
       <div className="bg-slate-800 border border-slate-700 w-full max-w-md p-6 rounded-2xl shadow-2xl text-slate-100">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold text-emerald-400">Edit Category</h2>

@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
+    <div className="w-full h-screen bg-slate-950 flex items-center justify-center overflow-hidden animate-in fade-in zoom-in-95 duration-500">
       <Toaster />
 
       <form

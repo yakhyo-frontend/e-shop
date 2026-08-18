@@ -4,7 +4,15 @@ import { toast } from "react-toastify";
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [categoryStats, setCategoryStats] = useState([]);
+  const [lowStockStats, setLowStockStats] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Pagination states
+  const [categoryPage, setCategoryPage] = useState(1);
+  const categoryPerPage = 4;
+
+  const [lowStockPage, setLowStockPage] = useState(1);
+  const lowStockPerPage = 4;
 
   const token = localStorage.getItem("accessToken");
 
@@ -34,21 +42,50 @@ const Dashboard = () => {
       }),
     );
 
-  const thClass =
-    "border border-slate-700 px-3 py-2 text-center text-sm font-medium text-slate-300";
-  const tdClass = "border border-slate-700 px-3 py-2 text-sm text-slate-300";
+  // LowStockStats
+  const fetchLowStockStats = () => {
+    return fetch("https://backend.magnateshop.uz/api/dashboard/low-stock", {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((res) =>
+      res.json().then((data) => {
+        if (!res.ok) {
+          throw new Error(data.message);
+        }
+        return data.data;
+      }),
+    );
+  };
 
   useEffect(() => {
-    Promise.all([fetchStats(), fetchCategoryStats()])
-      .then(([statsRes, categoryRes]) => {
+    Promise.all([fetchStats(), fetchCategoryStats(), fetchLowStockStats()])
+      .then(([statsRes, categoryRes, lowStockRes]) => {
         setStats(statsRes);
         setCategoryStats(categoryRes);
+        setLowStockStats(lowStockRes);
       })
       .catch((err) => {
         toast.error(err.message);
       })
       .finally(() => setLoading(false));
   }, []);
+
+  // Category Pagination logic
+  const indexOfLastCategory = categoryPage * categoryPerPage;
+  const indexOfFirstCategory = indexOfLastCategory - categoryPerPage;
+  const currentCategories = categoryStats.slice(
+    indexOfFirstCategory,
+    indexOfLastCategory,
+  );
+  const totalCategoryPages = Math.ceil(categoryStats.length / categoryPerPage);
+
+  // LowStock Pagination logic
+  const indexOfLastLowStock = lowStockPage * lowStockPerPage;
+  const indexOfFirstLowStock = indexOfLastLowStock - lowStockPerPage;
+  const currentLowStocks = lowStockStats.slice(
+    indexOfFirstLowStock,
+    indexOfLastLowStock,
+  );
+  const totalLowStockPages = Math.ceil(lowStockStats.length / lowStockPerPage);
 
   const StatCard = ({ title, value, color }) => (
     <div
@@ -61,7 +98,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-6 mt-[300px] bg-slate-900 min-h-screen">
+      <div className="flex items-center justify-center p-6 mt-[300px] bg-slate-900">
         <div className="size-[80px] border-4 border-slate-700 border-t-emerald-400 rounded-full animate-spin"></div>
       </div>
     );
@@ -103,44 +140,142 @@ const Dashboard = () => {
         />
       </div>
 
+      {/* Category Statistics Table */}
       <h2 className="mb-7 text-lg font-bold text-slate-200 border-l-3 border-sky-700 pl-3">
         Category Statistics
       </h2>
-      <table
-        className="w-full border border-slate-700 mb-6 bg-slate-800 rounded-2xl overflow-hidden shadow-lg shadow-slate-800"
-        style={{ borderCollapse: "collapse" }}
-      >
-        <thead>
-          <tr className="bg-slate-700">
-            <th className={thClass}>Category</th>
-            <th className={thClass}>Products</th>
-            <th className={thClass}>Active</th>
-            <th className={thClass}>Stock</th>
-            <th className={thClass}>Total Value</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categoryStats.map((category) => (
-            <tr key={category.id} className="hover:bg-slate-700/50">
-              <td className="border border-slate-700 px-3 py-2 text-sm text-slate-100 text-center">
-                {category.name}
-              </td>
-              <td className={`${tdClass} text-center`}>
-                {category.productsCount}
-              </td>
-              <td className={`${tdClass} text-center`}>
-                {category.activeProductsCount}
-              </td>
-              <td className={`${tdClass} text-center`}>
-                {category.totalStock}
-              </td>
-              <td className={`${tdClass} text-blue-400 text-center`}>
-                {category.totalValue.toLocaleString()} so'm
-              </td>
+      <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-4">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-slate-900/80 text-emerald-400 border-b border-slate-700">
+            <tr className="h-16 text-xs uppercase tracking-wider">
+              <th className="px-4 text-center font-semibold">Category</th>
+              <th className="px-4 text-center font-semibold">Products</th>
+              <th className="px-4 text-center font-semibold">Active</th>
+              <th className="px-4 text-center font-semibold">Stock</th>
+              <th className="px-4 text-center font-semibold">Total Value</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {currentCategories.map((category) => (
+              <tr
+                key={category.id}
+                className="hover:bg-slate-700/50 transition-all border-b border-slate-700 last:border-b-0"
+              >
+                <td className="px-4 py-4 text-sm text-slate-100 text-center font-medium">
+                  {category.name}
+                </td>
+                <td className="px-4 py-4 text-sm text-slate-300 text-center">
+                  {category.productsCount}
+                </td>
+                <td className="px-4 py-4 text-sm text-slate-300 text-center">
+                  {category.activeProductsCount}
+                </td>
+                <td className="px-4 py-4 text-sm text-slate-300 text-center">
+                  {category.totalStock}
+                </td>
+                <td className="px-4 py-4 text-sm text-emerald-400 font-bold text-center">
+                  {category.totalValue.toLocaleString()} so'm
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Category Pagination */}
+      <div className="flex items-center justify-center gap-2 mb-8">
+        <button
+          onClick={() => setCategoryPage((prev) => Math.max(prev - 1, 1))}
+          disabled={categoryPage === 1}
+          className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-xl disabled:opacity-40 hover:bg-slate-700 transition cursor-pointer text-sm font-medium"
+        >
+          Prev
+        </button>
+        <span className="px-4 py-2 text-slate-300 text-sm font-medium">
+          Page {categoryPage} of {totalCategoryPages || 1}
+        </span>
+        <button
+          onClick={() =>
+            setCategoryPage((prev) => Math.min(prev + 1, totalCategoryPages))
+          }
+          disabled={categoryPage === totalCategoryPages}
+          className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-xl disabled:opacity-40 hover:bg-slate-700 transition cursor-pointer text-sm font-medium"
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Low Stock Statistics Table */}
+      <h2 className="mb-7 text-lg mt-5 font-bold text-slate-200 border-l-3 border-rose-700 pl-3">
+        Low Stock Statistics
+      </h2>
+
+      {lowStockStats.length === 0 ? (
+        <p className="text-gray-500 mb-8">
+          There's no any low-stock products here.
+        </p>
+      ) : (
+        <>
+          <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-4">
+            <table className="w-full text-left border-collapse">
+              <thead className="bg-slate-900/80 text-emerald-400 border-b border-slate-700">
+                <tr className="h-16 text-xs uppercase tracking-wider">
+                  <th className="px-4 text-center font-semibold">Name</th>
+                  <th className="px-4 text-center font-semibold">Category</th>
+                  <th className="px-4 text-center font-semibold">Stock</th>
+                  <th className="px-4 text-center font-semibold">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentLowStocks.map((product) => (
+                  <tr
+                    key={product.id}
+                    className="hover:bg-slate-700/50 transition-all border-b border-slate-700 last:border-b-0"
+                  >
+                    <td className="px-4 py-4 text-sm text-slate-100 text-center font-medium">
+                      {product.name}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-slate-300 text-center">
+                      {product.category?.name}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-slate-300 text-center">
+                      {product.stock}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-emerald-400 font-bold text-center">
+                      {product.price.toLocaleString()} so'm
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Low Stock Pagination */}
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <button
+              onClick={() => setLowStockPage((prev) => Math.max(prev - 1, 1))}
+              disabled={lowStockPage === 1}
+              className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-xl disabled:opacity-40 hover:bg-slate-700 transition cursor-pointer text-sm font-medium"
+            >
+              Prev
+            </button>
+            <span className="px-4 py-2 text-slate-300 text-sm font-medium">
+              Page {lowStockPage} of {totalLowStockPages || 1}
+            </span>
+            <button
+              onClick={() =>
+                setLowStockPage((prev) =>
+                  Math.min(prev + 1, totalLowStockPages),
+                )
+              }
+              disabled={lowStockPage === totalLowStockPages}
+              className="px-4 py-2 bg-slate-800 border border-slate-700 text-slate-300 rounded-xl disabled:opacity-40 hover:bg-slate-700 transition cursor-pointer text-sm font-medium"
+            >
+              Next
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

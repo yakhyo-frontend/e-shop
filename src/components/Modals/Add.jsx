@@ -50,7 +50,7 @@ const Add = ({ onClose, onSave }) => {
   };
 
   return (
-    <div className="flex items-center justify-center fixed bg-black/60 z-50 inset-0 p-4">
+    <div className="flex items-center justify-center fixed bg-black/60 z-50 inset-0 p-4 animate-in fade-in zoom-in-95 duration-500">
       <div className="bg-slate-800 border border-slate-700 p-6 w-[450px] rounded-2xl shadow-2xl text-slate-100">
         <h2 className="text-xl font-bold text-emerald-400 mb-4">Add Product</h2>
 

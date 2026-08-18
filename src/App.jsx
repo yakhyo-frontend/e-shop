@@ -17,7 +17,7 @@ const App = () => {
   }, [accessToken]);
 
   return (
-    <div>
+    <div className="bg-slate-900">
       <Toaster />
 
       <Routes>

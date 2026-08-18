@@ -23,7 +23,7 @@ const CategoryDelete = ({ id, onClose, onSave }) => {
   };
 
   return (
-    <div className="fixed z-50 flex items-center justify-center inset-0 bg-black/60">
+    <div className="fixed z-50 flex items-center justify-center inset-0 bg-black/60 animate-in fade-in zoom-in-95 duration-500">
       <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700 w-[400px] shadow-2xl">
         <h2 className="text-xl font-bold text-white mb-2">Confirm Delete</h2>
         <p className="text-slate-400 mb-6">
