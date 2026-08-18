@@ -3,10 +3,8 @@ import toast from "react-hot-toast";
 
 const CategoryAdd = ({ onClose, onSave }) => {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [stock, setStock] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("accessToken");
@@ -26,6 +24,7 @@ const CategoryAdd = ({ onClose, onSave }) => {
         body: JSON.stringify({
           name,
           description,
+          stock,
         }),
       });
 
