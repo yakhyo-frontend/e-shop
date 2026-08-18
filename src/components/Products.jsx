@@ -33,7 +33,7 @@ const Products = () => {
   // Fetch - API
   const getProducts = async () => {
     try {
-      const API = `https://backend.magnateshop.uz/api/products?page=1&limit=20&isActive=true&inStock=true&sortBy=id&order=ASC`;
+      const API = `https://backend.magnateshop.uz/api/products?limit=20`;
       const res = await fetch(API, {
         headers: {
           "Content-Type": "application/json",
