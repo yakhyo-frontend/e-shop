@@ -21,7 +21,7 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside className="w-[260px] min-h-screen bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between select-none">
+    <aside className="w-[260px] h-screen sticky top-0 bg-slate-900 border-r border-slate-800 p-6 flex flex-col justify-between select-none">
       <div>
         <div className="mb-10 px-2">
           <h1 className="text-2xl font-bold text-emerald-400 tracking-wide">
