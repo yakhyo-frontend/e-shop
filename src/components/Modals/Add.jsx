@@ -131,7 +131,7 @@ const Add = ({ onClose, onSave }) => {
               Image URL
             </label>
             <input
-              type="url"
+              type="file"
               value={image}
               onChange={(e) => setImage(e.target.value)}
               required
