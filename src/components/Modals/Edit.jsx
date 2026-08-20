@@ -6,8 +6,34 @@ const Edit = ({ id, onClose, onSave }) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const token = localStorage.getItem("accessToken");
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(`https://backend.magnateshop.uz/api/categories`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      }
+
+      setCategories(data.data.items);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -120,16 +146,23 @@ const Edit = ({ id, onClose, onSave }) => {
 
           <div>
             <label className="block text-xs uppercase text-slate-400 mb-1 font-semibold">
-              Category ID
+              Category
             </label>
-            <input
-              type="number"
-              min="1"
+            <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
               required
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-100 text-sm focus:outline-none focus:border-emerald-400"
-            />
+              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm text-slate-100 cursor-pointer"
+            >
+              <option value="" disabled>
+                Select category...
+              </option>
+              {categories.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="flex justify-end gap-3 mt-6">

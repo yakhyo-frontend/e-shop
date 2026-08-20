@@ -127,15 +127,6 @@ const Categories = () => {
             <span>+ Add category</span>
           </button>
         </div>
-
-        <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-lg px-6 py-3 text-center">
-          <p className="text-xs text-slate-400 uppercase tracking-wider">
-            Total Categories
-          </p>
-          <h2 className="text-2xl font-bold text-emerald-400">
-            {categories.length}
-          </h2>
-        </div>
       </div>
 
       <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl overflow-hidden mb-6 mt-15">

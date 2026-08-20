@@ -1,19 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Add = ({ onClose, onSave }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [categoryId, setCategoryId] = useState("");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
 
   const token = localStorage.getItem("accessToken");
 
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(`https://backend.magnateshop.uz/api/categories`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      }
+
+      setCategories(data.data.items);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
@@ -35,8 +60,8 @@ const Add = ({ onClose, onSave }) => {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.message);
         toast.error(data.message);
+        throw new Error(data.message);
       }
 
       toast.success("Product added successfully!");
@@ -82,17 +107,23 @@ const Add = ({ onClose, onSave }) => {
           </div>
 
           <div>
-            <label className="text-xs uppercase text-slate-400">
-              Category ID
-            </label>
-            <input
-              type="number"
+            <label className="text-xs uppercase text-slate-400">Category</label>
+
+            <select
               value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              onChange={(e) => setCategories(e.target.value)}
               required
-              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm"
-              placeholder="1, 2, 3..."
-            />
+              className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm text-slate-100 cursor-pointer"
+            >
+              <option value="" disabled>
+                Select category...
+              </option>
+              {categories.map((category) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>
