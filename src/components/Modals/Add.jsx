@@ -111,7 +111,7 @@ const Add = ({ onClose, onSave }) => {
 
             <select
               value={categoryId}
-              onChange={(e) => setCategories(e.target.value)}
+              onChange={(e) => setCategoryId(e.target.value)}
               required
               className="w-full mt-1 px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:outline-none focus:border-emerald-400 text-sm text-slate-100 cursor-pointer"
             >
