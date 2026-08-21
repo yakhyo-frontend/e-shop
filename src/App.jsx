@@ -6,6 +6,7 @@ import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import { Toaster } from "react-hot-toast";
 import Categories from "./components/Category";
+import Admin from "./components/Admin";
 
 const App = () => {
   const accessToken = localStorage.getItem("accessToken");
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/layout/dashboard" element={<Dashboard />} />
             <Route path="/layout/category" element={<Categories />} />
             <Route path="/layout/products" element={<Products />} />
+            <Route path="/layout/admin" element={<Admin />} />
           </Route>
         ) : (
           <Route path="/login" element={<Login />} />

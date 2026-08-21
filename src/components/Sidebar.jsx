@@ -4,6 +4,7 @@ import { BsBoxSeam } from "react-icons/bs";
 import { CgLogOut } from "react-icons/cg";
 import { RiAdminFill } from "react-icons/ri";
 import { MdOutlineCategory } from "react-icons/md";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import toast from "react-hot-toast";
 
 export const Sidebar = () => {
@@ -76,6 +77,21 @@ export const Sidebar = () => {
           >
             <BsBoxSeam size={20} />
             <span>Products</span>
+          </NavLink>
+
+          <NavLink
+            to="/layout/admin"
+            end
+            className={({ isActive }) =>
+              `flex items-center gap-3.5 text-[15px] px-4 py-3 rounded-2xl transition-all  cursor-pointer ${
+                isActive
+                  ? "bg-emerald-600 text-white shadow-lg shadow-emerald-900 font-semibold"
+                  : "text-slate-400 hover:bg-slate-800  hover:text-emerald-300"
+              }`
+            }
+          >
+            <MdOutlineAdminPanelSettings size={20} />
+            <span>Admin</span>
           </NavLink>
         </nav>
       </div>

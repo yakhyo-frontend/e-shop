@@ -56,6 +56,7 @@ const Login = () => {
       <Toaster />
 
       <form
+        type="submit"
         onSubmit={handleSubmit}
         className="relative bg-white/95 w-[420px] border border-gray-100 p-8 pt-10 shadow-2xl rounded-[30px] transition-all"
       >
